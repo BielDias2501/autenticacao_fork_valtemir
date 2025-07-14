@@ -9,9 +9,9 @@ const router = express.Router()
 router.post('/cadastrar', UsuarioController.cadastrar)
 
 // rota de perfil
-router.get('/perfil', AutenticacaoMiddleware.autenticarToken, AlunoController.perfil)
+router.get('/perfil', AutenticacaoMiddleware.autenticarToken, UsuarioController.perfil)
 
 // rota de tarefa
-// router.get('/tarefa', AutenticacaoMiddleware.autenticarToken, AutorizacaoMiddleware.autorizar(['professor']),  )
+router.get('/listar-tarefa', AutenticacaoMiddleware.autenticarToken, AutorizacaoMiddleware.autorizar(['professor','aluno']), UsuarioController.listar )
 
 module.exports = router
