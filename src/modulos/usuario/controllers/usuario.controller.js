@@ -1,7 +1,6 @@
-const { where } = require("sequelize");
-const Aluno = require("../models/aluno.model");
+const Usuario = require("../models/usuario.model");
 const bcrypt =require('bcryptjs')
-class AlunoController {
+class UsuarioController {
   static async cadastrar(req, res) {
     try {
       const { nome, matricula, email, senha } = req.body;
@@ -12,8 +11,8 @@ class AlunoController {
       }
       // criptografando a senha
       const senhaCriptografada = await bcrypt.hash(senha, 15);
-      await Aluno.create({ nome, matricula, email, senha: senhaCriptografada });
-      res.status(200).json({ msg: 'Aluno criado com sucesso' });
+      await Usuario.create({ nome, matricula, email, senha: senhaCriptografada });
+      res.status(200).json({ msg: 'Usuario criado com sucesso' });
     } catch (error) {
         res.status(500).json({msg: 'Erro do servidor. Tente novamente mais tarde!', erro: error.message})
     }
@@ -21,18 +20,18 @@ class AlunoController {
   static async perfil(req, res) {
     try {
       const { matricula } = req.usuario
-      const aluno = await Aluno.findOne({
+      const Usuario = await Usuario.findOne({
         where: {matricula},
         attributes: ['nome','email', 'matricula']
       });
-      if (!aluno) {
-        return res.status(401).json({ msg: "Não existe aluno cadastrado!" });
+      if (!Usuario) {
+        return res.status(401).json({ msg: "Não existe Usuario cadastrado!" });
       }
-      res.status(200).json(aluno);
+      res.status(200).json(Usuario);
     } catch (error) {
         res.status(500).json({msg: 'Erro do servidor. Tente novamente mais tarde!'})
     }
   }
 }
 
-module.exports = AlunoController
+module.exports = UsuarioController
